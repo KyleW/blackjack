@@ -63,8 +63,20 @@ describe "The game correctly determins the winner if ", ->
   it "the dealer gets blackjack.", ->
     spyOn(hand, 'scores').andReturn([18])
     spyOn(dealer, 'scores').andReturn([21])
-    spyOn(app, "youTie")
-    hand.stand()
-    expect(app.youTie).toHaveBeenCalled()
+    spyOn(app, "youLose")
+    app.startGame()
+    expect(app.youLose).toHaveBeenCalled()
 
-  # it "the player gets blackjack.", ->
+  it "the player gets blackjack.", ->
+    spyOn(hand, 'scores').andReturn([21])
+    spyOn(dealer, 'scores').andReturn([18])
+    spyOn(app, "youWin")
+    app.startGame()
+    expect(app.youWin).toHaveBeenCalled()
+
+  it "the player AND the dealer get blackjack.", ->
+    spyOn(hand, 'scores').andReturn([21])
+    spyOn(dealer, 'scores').andReturn([21])
+    spyOn(app, "youTie")
+    app.startGame()
+    expect(app.youTie).toHaveBeenCalled()

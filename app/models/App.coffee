@@ -2,11 +2,16 @@
 class window.App extends Backbone.Model
 
   initialize: ->
+    @deal()
+    @addListeners()
+
+  deal: ->
     # Deal cards
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
+  addListeners: ->
     # Event Listeners
     @get('playerHand').on('stand',=>
       @get('dealerHand').at(0).flip()
@@ -21,23 +26,24 @@ class window.App extends Backbone.Model
     @get('dealerHand').on('youWin',=> @youWin())
     @get('dealerHand').on('youTie',=> @youTie())
 
+  startGame: ->
     # Check for player blackjack
     if @get('playerHand').checkBlackjack()
       if _.max(@get('dealerHand').scores()) >= 10
         @get('dealerHand').at(0).flip()
         if @get('dealerHand').checkBlackjack()
-          @youTie()
+          return @youTie()
         else
-          @youWin()
+          return @youWin()
       else
         @get('dealerHand').at(0).flip()
-        @youWin()
+        return @youWin()
 
     # Check for dealer blackjack
     if _.max(@get('dealerHand').scores()) >= 10
       @get('dealerHand').at(0).flip()
       if @get('dealerHand').checkBlackjack()
-        @youLose()
+        return @youLose()
       @get('dealerHand').at(0).flip()
 
   startOver: ->
