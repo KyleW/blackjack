@@ -14,4 +14,10 @@ class window.HandView extends Backbone.View
     @$el.html @template @collection
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
-    @$('.score').text @collection.scores()[0]
+    if @collection.isDealer
+      if @collection.at(0).get('rankName') is "Ace" and @collection.at(0).get('revealed') is false
+        @$('.score').text @collection.scores()[0]
+      else
+        @$('.score').text @collection.scores().join(" or ")
+    else
+      @$('.score').text @collection.scores().join(" or ")

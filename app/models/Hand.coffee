@@ -7,7 +7,7 @@ class window.Hand extends Backbone.Collection
   hit: ->
     newCard = @deck.pop()
     @add(newCard).last()
-    @checkBust()
+    @checkBust() unless @isDealer
     newCard
 
   stand:-> @trigger "stand"
@@ -26,10 +26,7 @@ class window.Hand extends Backbone.Collection
 
   checkBust: ->
     if _.min(@scores()) > 21
-      if @isDealer
-        @trigger "youWin"
-      else
-        @trigger "youLose"
+      @trigger "youLose"
 
   playDealer: ->
     if _.max(@scores()) > 16

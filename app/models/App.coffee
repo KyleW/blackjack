@@ -19,15 +19,21 @@ class window.App extends Backbone.Model
     @get('dealerHand').on('youWin',=> @youWin())
     @get('dealerHand').on('youTie',=> @youTie())
 
+  startOver: ->
+    $('body').html(new AppView(model: new App()).$el)
+
   youLose: ->
     alert "You lose!"
-    $('body').html(new AppView(model: new App()).$el)
+    @startOver()
+
   youWin: ->
     alert "You win!"
-    $('body').html(new AppView(model: new App()).$el)
+    @startOver()
+
   youTie: ->
     alert "It's a tie!"
-    $('body').html(new AppView(model: new App()).$el)
+    @startOver()
+
   pickWinner: ->
     playerScore = 0
     for i in @get('playerHand').scores()
