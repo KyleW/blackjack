@@ -39,3 +39,7 @@ class window.Hand extends Backbone.Collection
       @playDealer()
     else
       @trigger "pickWinner"
+
+  checkBlackjack: ->
+    if @length is 2 and _.max(@scores()) is 21
+      true
