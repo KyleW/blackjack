@@ -13,7 +13,7 @@ describe "Check for busts after hit", ->
 
   it "If you hit, and have more than 21 you lose should fire", ->
     spyOn(hand, 'scores').andReturn([30])
-    spyOn(app, 'youLose')
+    spyOn(app, 'youLose').andCallThrough()
     hand.hit()
     expect(app.youLose).toHaveBeenCalled()
 
