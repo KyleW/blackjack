@@ -1,3 +1,7 @@
+body {
+  background-image:url('../res/pool_table.png');
+}
+
 .card {
   float: left;
   border: solid 1px black;
