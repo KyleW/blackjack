@@ -13,7 +13,14 @@ class window.App extends Backbone.Model
     @get('playerHand').on('youWin',=> @youWin())
     @get('playerHand').on('youTie',=> @youTie())
 
+    @get('dealerHand').on('youLose',=> @youLose())
+    @get('dealerHand').on('youWin',=> @youWin())
+    @get('dealerHand').on('youTie',=> @youTie())
+
   youLose: -> alert "You lose!"
   youWin: -> alert "You win!"
   youTie: -> alert "It's a tie!"
-  pickWinner: ->
+  # pickWinner: ->
+  #   playerScore = if _.max()
+  #   dealerScore = if
+  #   if @get('playerHand').scores() > @get('dealerHand').scores
