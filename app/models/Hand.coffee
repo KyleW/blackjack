@@ -32,7 +32,18 @@ class window.Hand extends Backbone.Collection
         @trigger "youLose"
 
   playDealer: ->
+    if _.max(@scores) > 16
+      @trigger "pickWinner"
+    else if _.max(@scores) <16
+      @hit()
+      @playDealer()
+    else if @scores.length > 1
+      @hit()
+      @playDealer()
+    else
+      @trigger "pickWinner"
+
+
     # play as dealer
     # compare scores
     # announce winner
-    while @scores[0] < 16 then @hit()
