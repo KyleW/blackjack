@@ -5,8 +5,10 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    @add(@deck.pop()).last()
-    @checkBust() unless @isDealer 
+    newCard = @deck.pop()
+    @add(newCard).last()
+    @checkBust() unless @isDealer
+    newCard
 
   scores: ->
     # The scores are an array of potential scores.

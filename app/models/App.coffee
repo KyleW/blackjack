@@ -7,7 +7,9 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
 
     @get('playerHand').on('youLose',@youLose)
+    @get('playerHand').on('youWin',@youWin)
+    @get('playerHand').on('youTie',@youTie)
 
-  youLose: -> alert "youLose"
-  youWin: ->
-  youTie: ->
+  youLose: -> alert "You lose!"
+  youWin: -> alert "You win!"
+  youTie: -> alert "It's a tie!"
