@@ -11,6 +11,11 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
+    setTimeout(=>
+      @startGame()
+    ,1500)
+
+
   addListeners: ->
     # Event Listeners
     @get('playerHand').on('stand',=>
@@ -18,13 +23,13 @@ class window.App extends Backbone.Model
       @get('dealerHand').playDealer())
     @get('dealerHand').on('pickWinner',=> @pickWinner())
 
-    @get('playerHand').on('youLose',=> @youLose())
-    @get('playerHand').on('youWin',=> @youWin())
-    @get('playerHand').on('youTie',=> @youTie())
+    @get('playerHand').on('youLose',=> @endGame("lose"))
+    @get('playerHand').on('youWin',=> @endGame("win"))
+    @get('playerHand').on('youTie',=> @endGame("tie"))
 
-    @get('dealerHand').on('youLose',=> @youLose())
-    @get('dealerHand').on('youWin',=> @youWin())
-    @get('dealerHand').on('youTie',=> @youTie())
+    @get('dealerHand').on('youLose',=> @endGame("lose"))
+    @get('dealerHand').on('youWin',=> @endGame("win"))
+    @get('dealerHand').on('youTie',=> @endGame("tie"))
 
   startGame: ->
     # Check for player blackjack
@@ -32,34 +37,28 @@ class window.App extends Backbone.Model
       if _.max(@get('dealerHand').scores()) >= 10
         @get('dealerHand').at(0).flip()
         if @get('dealerHand').checkBlackjack()
-          return @youTie()
+          return @endGame("tie")
         else
-          return @youWin()
+          return @endGame("win")
       else
         @get('dealerHand').at(0).flip()
-        return @youWin()
+        return @endGame("win")
 
     # Check for dealer blackjack
     if _.max(@get('dealerHand').scores()) >= 10
       @get('dealerHand').at(0).flip()
       if @get('dealerHand').checkBlackjack()
-        return @youLose()
+        return @endGame("lose")
       @get('dealerHand').at(0).flip()
 
-  startOver: ->
-    $('body').html(new AppView(model: new App()).$el)
+  # playAgain: ->
+  #   @deal()
+    # $('body').html(new AppView(model: new App()).$el)
 
-  youLose: ->
-    alert "You lose!"
-    @startOver()
-
-  youWin: ->
-    alert "You win!"
-    @startOver()
-
-  youTie: ->
-    alert "It's a tie!"
-    @startOver()
+  endGame:(result)->
+    alert "You #{result}!"
+    $('.playAgain').show()
+    # show play again button?
 
   pickWinner: ->
     playerScore = 0
@@ -71,8 +70,8 @@ class window.App extends Backbone.Model
       if i > dealerScore and i < 22 then dealerScore = i
 
     if playerScore > dealerScore
-      @youWin()
+      @endGame("win")
     else if playerScore < dealerScore
-      @youLose()
+      @endGame("lose")
     else
-      @youTie()
+      @endGame("tie")
