@@ -7,8 +7,10 @@ class window.Hand extends Backbone.Collection
   hit: ->
     newCard = @deck.pop()
     @add(newCard).last()
-    @checkBust() unless @isDealer
+    @checkBust()
     newCard
+
+  stand:-> @trigger "stand"
 
   scores: ->
     # The scores are an array of potential scores.
@@ -23,4 +25,14 @@ class window.Hand extends Backbone.Collection
     if hasAce then [score, score + 10] else [score]
 
   checkBust: ->
-    @trigger "youLose" if _.min(@scores()) > 21
+    if _.min(@scores()) > 21
+      if @isDealer
+        @trigger "youWin"
+      else
+        @trigger "youLose"
+
+  playDealer: ->
+    # play as dealer
+    # compare scores
+    # announce winner
+    while @scores[0] < 16 then @hit()
